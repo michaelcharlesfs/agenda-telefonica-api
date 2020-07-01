@@ -14,6 +14,13 @@ public class Contato {
     @Column(unique = true, nullable = false)
     private String telefone;
 
+    public Contato() { }
+
+    public Contato(String nome, String telefone) {
+        this.nome = nome;
+        this.telefone = telefone;
+    }
+
     public Long getId() {
         return id;
     }
