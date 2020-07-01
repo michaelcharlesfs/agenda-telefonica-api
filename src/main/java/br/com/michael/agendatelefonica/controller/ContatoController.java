@@ -5,6 +5,8 @@ import br.com.michael.agendatelefonica.controller.dto.ContatoDto;
 import br.com.michael.agendatelefonica.modelo.Contato;
 import br.com.michael.agendatelefonica.repository.ContatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,6 +28,7 @@ public class ContatoController {
     private ContatoRepository contatoRepository;
 
     @GetMapping
+    @Cacheable(value = "listaDeContatos")
     public ResponseEntity<Page<ContatoDto>> listarContatos(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable paginacao) {
         Page<Contato> paginaContatos = contatoRepository.findAll(paginacao);
         return ResponseEntity.ok(ContatoDto.construir(paginaContatos));
@@ -33,6 +36,7 @@ public class ContatoController {
 
     @PostMapping
     @Transactional
+    @CacheEvict(value = "listaDeContatos")
     public ResponseEntity<ContatoDto> cadastrarContato(@RequestBody @Valid ContatoForm contatoForm,
                                                        UriComponentsBuilder uriComponentsBuilder) {
         Contato contato = contatoForm.atualizar();
@@ -55,6 +59,7 @@ public class ContatoController {
 
     @PutMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "listaDeContatos")
     public ResponseEntity<ContatoDto> atualizarContato(@PathVariable Long id,
                                                        @RequestBody @Valid ContatoForm contatoForm) {
         Contato contato = contatoForm.atualizar(contatoRepository, id);
@@ -67,6 +72,7 @@ public class ContatoController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "listaDeContatos")
     public ResponseEntity<?> deletarContatoPorId(@PathVariable Long id) {
         Optional<Contato> optional = contatoRepository.findById(id);
         if (optional.isPresent()) {
