@@ -65,4 +65,16 @@ public class ContatoController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> deletarContatoPorId(@PathVariable Long id) {
+        Optional<Contato> optional = contatoRepository.findById(id);
+        if (optional.isPresent()) {
+            contatoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
