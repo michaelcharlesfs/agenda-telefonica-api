@@ -1,6 +1,6 @@
 package br.com.michael.agendatelefonica.controller;
 
-import br.com.michael.agendatelefonica.controller.dto.ContatoForm;
+import br.com.michael.agendatelefonica.controller.form.ContatoForm;
 import br.com.michael.agendatelefonica.controller.dto.ContatoDto;
 import br.com.michael.agendatelefonica.modelo.Contato;
 import br.com.michael.agendatelefonica.repository.ContatoRepository;
